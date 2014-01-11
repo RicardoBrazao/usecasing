@@ -20,8 +20,7 @@ module UseCase
       end
 
       def perform(ctx = { })
-        execution_order = build_execution_order(self, {})
-        tx(execution_order, ctx) do |usecase, context| 
+        tx(ExecutionOrder.run(self), ctx) do |usecase, context| 
           usecase.new(context).perform 
         end
       end
@@ -47,20 +46,8 @@ module UseCase
         context
       end
 
-      def build_execution_order(start_point, visited)
-        raise StandardError.new("cyclic detected: #{start_point} in #{self}") if visited[start_point]
-        visited[start_point] = true
-        return [start_point] if start_point.dependencies.empty?
-
-        childrens = start_point.dependencies.each do |point|
-          build_execution_order(point, visited).unshift point
-        end
-        childrens.push(start_point)
-
-      end
-    end
-
-  end
+    end #ClassMethods
+  end #BaseClassMethod
 
   class Base
 
