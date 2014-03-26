@@ -2,12 +2,45 @@ module UseCase
 
   class Context
 
-    attr_reader :errors
+    class Errors
 
-    def initialize(hash = {})
-      raise ArgumentError.new('Must be a Hash') unless hash.is_a? ::Hash 
-      @values = symbolyze_keys(hash)
-      @errors = []
+      def initialize
+        @errors = Hash.new { |h,k| h[k.to_sym] = [] }
+      end
+
+      def all(delimiter= ", ", &block)
+        values = @errors.map {|key, value| value }.flatten
+        if block_given?
+          values.each &block
+        else
+          values.join(delimiter)
+        end
+      end
+
+      def [](index)
+        @errors[index.to_sym]
+      end
+
+      def push(key, value)
+        @errors[key.to_sym].push(value)
+      end
+
+      def empty?
+        @errors.keys.empty?
+      end
+
+    end
+
+    attr_accessor :errors
+
+    def initialize(param = {})
+      raise ArgumentError.new('Must be a Hash or other Context') unless (param.is_a? ::Hash) || (param.is_a? Context) 
+      @values = symbolyze_keys(param.to_hash)
+      @errors = Errors.new
+    end
+
+    def to_hash
+      @values
     end
 
     def method_missing(method, *args, &block)
@@ -24,7 +57,7 @@ module UseCase
     end
 
     def failure(key, value)
-      @errors.push({ key => value })
+      @errors.push(key, value)
     end
 
     private

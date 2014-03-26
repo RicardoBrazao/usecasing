@@ -4,6 +4,8 @@
 ## Installation
 
 [![Build Status](https://secure.travis-ci.org/tdantas/usecasing.png)](http://travis-ci.org/tdantas/usecasing)
+[![Dependency Status](https://gemnasium.com/tdantas/usecasing.svg)](https://gemnasium.com/tdantas/usecasing)
+
 
 Add this line to your application's Gemfile:
 
@@ -137,6 +139,35 @@ Oww, yeah, let's notify the customer
 
 
 Let me know what do you think about it.
+
+
+#### UseCase::Base contract
+
+````
+        # None of those methods are required.
+         
+
+	class BusinessRule < UseCase::Base
+	  
+	  def before
+	    # executed before perform
+	  end
+	  
+	  def perform
+	    # execute the responsability that you want
+	  end
+	  
+	  def rollback
+	   # Will be called only on failure
+	  end
+	  
+	end
+
+
+````
+
+
+
 
 #### TODO
  
