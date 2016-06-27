@@ -53,7 +53,7 @@ Let's build a controller
 Ok, What is FinalizeInvoiceUseCase ?
 
 FinalizeInvoiceUseCase will be responsible for perform the Use Case/Story.  
-Each usecase should satisfy the [Single Responsability Principle](http://en.wikipedia.org/wiki/Single_responsibility_principle) and to achieve this principle, one usecase depends of others usecases building a Chain of Resposability.
+Each usecase should satisfy the [Single Responsibility Principle](http://en.wikipedia.org/wiki/Single_responsibility_principle) and to achieve this principle, one usecase depends of others usecases building a Chain of Resposibility.
 
 
 ````
@@ -75,7 +75,7 @@ This is what we call context, the usecase context will be shared between all cha
 	class FindInvoice < UseCase::Base
 	
 		def before
-			@user = context.curent_user
+			@user = context.current_user
 		end
 		
 		def perform
@@ -83,7 +83,7 @@ This is what we call context, the usecase context will be shared between all cha
 			# we could do that in one before_filter
 			invoice = @user.invoices.find(context.invoice_id)
 			
-			# asign to the context make available to all chain
+			# assign to the context make available to all chain
 			context.invoice = invoice
 			   
 		end
@@ -197,7 +197,7 @@ Let me know what do you think about it.
 	  end
 	  
 	  def perform
-	    # execute the responsability that you want
+	    # execute the responsibility that you want
 	  end
 	  
 	  def rollback
